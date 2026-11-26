@@ -1,0 +1,1 @@
+{"name":"ow3d-server","private":true,"type":"module","version":"0.1.0","scripts":{"start":"tsx index.ts"},"engines":{"node":">=20"},"dependencies":{"@colyseus/core":"^0.16.26","@colyseus/schema":"^3.0.76","@colyseus/ws-transport":"^0.16.5","@supabase/supabase-js":"^2.119.2","tsx":"^4.23.15"}}
