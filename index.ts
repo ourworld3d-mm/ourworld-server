@@ -62,8 +62,9 @@ export class WorldRoom extends Room {
 
   async onLeave(client: Client, consented: boolean) {
     const a = client.auth as Auth
+    console.log('onLeave', a.userId.slice(0, 8), 'consented', consented, 'clients', this.clients.length)
     if (!consented) {
-      try { await this.allowReconnection(client, 20); return } catch { /* timed out */ }
+      try { await this.allowReconnection(client, 20); console.log('reconnected', a.userId.slice(0, 8)); return } catch (e: any) { console.log('reconnect ended', a.userId.slice(0, 8), String(e?.message ?? e)) }
     }
     this.poses.delete(a.userId)
     this.broadcast('peer-left', { id: a.userId })
