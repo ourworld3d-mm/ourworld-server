@@ -60,11 +60,18 @@ export class WorldRoom extends Room {
     this.broadcast('peer-joined', { id: a.userId, name: a.name }, { except: client })
   }
 
+  checkReconnectionToken(token: string) {
+    const r = (super.checkReconnectionToken as any).call(this, token)
+    console.log(new Date().toISOString(), 'checkReconnectionToken', token, 'known', Object.keys((this as any)._reconnections ?? {}).join('|'), '->', r)
+    return r
+  }
+
   async onLeave(client: Client, consented: boolean) {
+    console.log(new Date().toISOString(), 'leave-token', client.reconnectionToken)
     const a = client.auth as Auth
     console.log('onLeave', a.userId.slice(0, 8), 'consented', consented, 'clients', this.clients.length)
     if (!consented) {
-      try { await this.allowReconnection(client, 20); console.log('reconnected', a.userId.slice(0, 8)); return } catch (e: any) { console.log('reconnect ended', a.userId.slice(0, 8), String(e?.message ?? e)) }
+      try { await this.allowReconnection(client, 20); console.log('reconnected', a.userId.slice(0, 8)); return } catch (e: any) { console.log(new Date().toISOString(), 'reconnect ended', a.userId.slice(0, 8), String(e?.message ?? e)) }
     }
     this.poses.delete(a.userId)
     this.broadcast('peer-left', { id: a.userId })
